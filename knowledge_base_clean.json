@@ -1,0 +1,158 @@
+[
+    {
+        "Column Name": "Anonymous_Uid",
+        "Description": "A unique identifier assigned to each patient to ensure data privacy and enable tracking across multiple visits without revealing personal details.",
+        "Example": "-"
+    },
+    {
+        "Column Name": "DrugEye",
+        "Description": "Specifies the eye for which the drug was prescribed during each visit. If multiple records are tied to the same visit, the values are separated by semicolons (;). - 1: Right eye - 2: Left eye - 3: Both eyes",
+        "Example": "Original Format: 1;1;3;3 Transformed Format (if split for clarity): - Record 1: 1 (Right eye) - Record 2: 1 (Right eye) - Record 3: 3 (Both eyes) - Record 4: 3 (Both eyes)"
+    },
+    {
+        "Column Name": "Drugname",
+        "Description": "The name of the medication prescribed during a single visit. Multiple drugs prescribed within the same visit are separated by semicolons (;).",
+        "Example": "Original Format: GATILOX DM-10ML; GATILOX DM-10ML; MISOPT EYE DROPS; P-NAC TABS Transformed Format: - Drug 1: GATILOX DM-10ML - Drug 2: GATILOX DM-10ML - Drug 3: MISOPT EYE DROPS - Drug 4: P-NAC TABS"
+    },
+    {
+        "Column Name": "drugdaysdescription",
+        "Description": "Duration for which the prescribed drug is to be used. If multiple records are tied to the same visit, the values are separated by semicolons (;).",
+        "Example": "Original Format: 7 days;10 days;14 days Transformed Format: - Record 1: 7 days - Record 2: 10 days - Record 3: 14 days"
+    },
+    {
+        "Column Name": "drugfreqdesc",
+        "Description": "Frequency of drug administration during a visit. Multiple frequencies in a single visit are separated by semicolons (;).",
+        "Example": "Original Format: 4 times a day;Morning only;Evening only Transformed Format: - Record 1: 4 times a day - Record 2: Morning only - Record 3: Evening only"
+    },
+    {
+        "Column Name": "drugmealsdesc",
+        "Description": "Indicates whether the drug should be taken before or after meals during a visit. Multiple records in a single visit are separated by semicolons (;).",
+        "Example": "Original Format: Before Meals;After Meals;After Meals Transformed Format: - Record 1: Before Meals - Record 2: After Meals - Record 3: After Meals"
+    },
+    {
+        "Column Name": "drugstartdate",
+        "Description": "The start date for the prescribed medication. Multiple records for a single visit are separated by semicolons (;).",
+        "Example": "Original Format: 2023-01-01;2023-02-01;2023-03-01 Transformed Format: - Record 1: 2023-01-01 - Record 2: 2023-02-01 - Record 3: 2023-03-01"
+    },
+    {
+        "Column Name": "drugdosagedesc",
+        "Description": "Description of the drug dosage, such as \"1 drop\" or \"1 tablet\". Multiple records for the same visit are separated by semicolons (;).",
+        "Example": "Original Format: 1 drop;1 tablet;2 drops Transformed Format: - Record 1: 1 drop - Record 2: 1 tablet - Record 3: 2 drops"
+    },
+    {
+        "Column Name": "DiagnosisEye",
+        "Description": "Specifies the eye for which the diagnosis was made during each visit. If multiple visits are recorded in a single patient record, the values are separated by semicolons (;). Each value corresponds to one visit: - 1: Right eye - 2: Left eye - 3: Both eyes.",
+        "Example": "Original Format: 3;3;3;0;3;1 Transformed Format: - Records1: 3 - Records2: 3 - Records3: 3 - Records4: 0 - Records5: 3 - Records6: 1"
+    },
+    {
+        "Column Name": "DiagnosisName",
+        "Description": "The diagnosis or medical condition identified during the patient's visit. If multiple diagnoses are recorded for a single patient across visits, the values are separated by semicolons (;).",
+        "Example": "Original Format: CSCR- Central Serous Chorio Retinopathy; S/P Focal Laser; Glaucoma Suspect; Hypertension; S/P Intravitreal Injection; CNVM- Choroidal neovascular membrane Transformed Format: - Record 1: CSCR- Central Serous Chorio Retinopathy - Record 2: S/P Focal Laser - Record 3: Glaucoma Suspect - Record 4: Hypertension - Record 5: S/P Intravitreal Injection - Record 6: CNVM- Choroidal neovascular membrane"
+    },
+    {
+        "Column Name": "deptname",
+        "Description": "The department or specialty clinic the patient Recorded, such as Retina Clinic or Glaucoma Clinic. If multiple Records are recorded in the same patient record, the values are separated by semicolons (;).",
+        "Example": "Original Format: Retina Clinic;Glaucoma Clinic;Retina Clinic Transformed Format: - Records1: Retina Clinic - Records2: Glaucoma Clinic - Records3: Retina Clinic"
+    },
+    {
+        "Column Name": "investicationName",
+        "Description": "The diagnostic tests, scans, or procedures performed during the patient's visit, such as Optical Coherence Tomography or blood tests. If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: Optical Coherence Tomography;Blood Test;OCT Scan Transformed Format: - Records1: Optical Coherence Tomography - Records2: Blood Test - Records3: OCT Scan"
+    },
+    {
+        "Column Name": "complaintName",
+        "Description": "The symptoms or issues reported by the patient during their visit, such as pain, redness, or defective vision. If multiple visits are recorded in a single patient record, the values are separated by semicolons (;).",
+        "Example": "Original Format: Pain;Redness;Defective Vision Transformed Format: - Records1: Pain - Records2: Redness - Records3: Defective Vision"
+    },
+    {
+        "Column Name": "WearGlasses",
+        "Description": "Indicates whether the patient wears glasses: Yes or No. If multiple visits are recorded, the values are separated by semicolons (;) indicating multiple records for the same visit.",
+        "Example": "Original Format: Yes;No;Yes Transformed Format: - Records1: Yes - Records2: No - Records3: Yes"
+    },
+    {
+        "Column Name": "CurrentGlassDuration",
+        "Description": "Specifies the duration for which the patient has been using their current pair of glasses, e.g., \"1 year\", \"2 years\". If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: 1 year;2 years;3 months Transformed Format: - Records1: 1 year - Records2: 2 years - Records3: 3 months"
+    },
+    {
+        "Column Name": "Revalue",
+        "Description": "Visual acuity measurement for the right eye (RE). If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: 6/6;6/12;6/36 Transformed Format: - Records1: 6/6 - Records2: 6/12 - Records3: 6/36"
+    },
+    {
+        "Column Name": "Levalue",
+        "Description": "Visual acuity measurement for the left eye (LE). If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: 6/6;6/24;6/60 Transformed Format: - Records1: 6/6 - Records2: 6/24 - Records3: 6/60"
+    },
+    {
+        "Column Name": "LidLe",
+        "Description": "Observations or findings related to the eyelid of the left eye. If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: Normal;Edema;Ptosis Transformed Format: - Records1: Normal - Records2: Edema - Records3: Ptosis"
+    },
+    {
+        "Column Name": "LidRe",
+        "Description": "Observations or findings related to the eyelid of the right eye. If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: Normal;Ptosis;Blepharitis Transformed Format: - Records1: Normal - Records2: Ptosis - Records3: Blepharitis"
+    },
+    {
+        "Column Name": "ConjunctivaRe",
+        "Description": "Observations of the conjunctiva (the thin membrane covering the white part of the eye) of the right eye. If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: Clear;Inflamed;Irritated Transformed Format: - Records1: Clear - Records2: Inflamed - Records3: Irritated"
+    },
+    {
+        "Column Name": "ConjunctivaLe",
+        "Description": "Observations of the conjunctiva of the left eye. If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: Clear;Irritated;Inflamed Transformed Format: - Records1: Clear - Records2: Irritated - Records3: Inflamed"
+    },
+    {
+        "Column Name": "CorneaRe",
+        "Description": "Findings related to the cornea of the right eye. If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: Clear;Scarring;Edema Transformed Format: - Records1: Clear - Records2: Scarring - Records3: Edema"
+    },
+    {
+        "Column Name": "CorneaLe",
+        "Description": "Findings related to the cornea of the left eye. If multiple visits are recorded, the values are separated by semicolons (;).",
+        "Example": "Original Format: Clear;Edema;Scarring Transformed Format: - Records1: Clear - Records2: Edema - Records3: Scarring"
+    },
+    {
+        "Column Name": "AnteriorChamberRe",
+        "Description": "Observations of the anterior chamber (the fluid-filled space between the cornea and iris) of the right eye. If multiple values are recorded, they are separated by semicolons (;), indicating repeated assessments during a visit.",
+        "Example": "Original Format: Normal Depth;Shallow Depth;Normal Depth Transformed Format: - Records1: Normal Depth - Records2: Shallow Depth - Records3: Normal Depth"
+    },
+    {
+        "Column Name": "AnteriorChamberLe",
+        "Description": "Observations of the anterior chamber of the left eye. If multiple values are recorded, they are separated by semicolons (;), indicating repeated assessments during a visit.",
+        "Example": "Original Format: Normal Depth;Cells Present;Shallow Depth Transformed Format: - Records1: Normal Depth - Records2: Cells Present - Records3: Shallow Depth"
+    },
+    {
+        "Column Name": "discre",
+        "Description": "Describes findings related to the retina or optic disc of the right eye. If multiple findings are recorded, they are separated by semicolons (;), indicating multiple observations during the same visit.",
+        "Example": "Original Format: 0.7CDR;Bayonetting;Edema Transformed Format: - Records1: 0.7CDR - Records2: Bayonetting - Records3: Edema"
+    },
+    {
+        "Column Name": "discle",
+        "Description": "Describes findings related to the retina or optic disc of the left eye. If multiple findings are recorded, they are separated by semicolons (;).",
+        "Example": "Original Format: 0.6CDR;Pigmented Lesion;Normal Transformed Format: - Records1: 0.6CDR - Records2: Pigmented Lesion - Records3: Normal"
+    },
+    {
+        "Column Name": "vesselsre",
+        "Description": "Observations of blood vessels in the retina of the right eye. If multiple observations are recorded, they are separated by semicolons (;).",
+        "Example": "Original Format: Normal;Dilated;Tortuous Transformed Format: - Records1: Normal - Records2: Dilated - Records3: Tortuous"
+    },
+    {
+        "Column Name": "vesselsle",
+        "Description": "Observations of blood vessels in the retina of the left eye. If multiple observations are recorded, they are separated by semicolons (;).",
+        "Example": "Original Format: Normal;Dilated;Narrowed Transformed Format: - Records1: Normal - Records2: Dilated - Records3: Narrowed"
+    },
+    {
+        "Column Name": "backgroundretinare",
+        "Description": "Describes the background findings in the retina of the right eye, such as scars, lesions, or pigmentation. If multiple findings are recorded, they are separated by semicolons (;).",
+        "Example": "Original Format: Pigmented Lesion;Macular Scar;Normal Transformed Format: - Records1: Pigmented Lesion - Records2: Macular Scar - Records3: Normal"
+    },
+    {
+        "Column Name": "backgroundretinale",
+        "Description": "Describes the background findings in the retina of the left eye, such as scars, lesions, or pigmentation. If multiple findings are recorded, they are separated by semicolons (;).",
+        "Example": "Original Format: RPE Lesion;Laser Scars;Normal Transformed Format: - Records1: RPE Lesion - Records2: Laser Scars - Records3: Normal"
+    }
+    
+]
