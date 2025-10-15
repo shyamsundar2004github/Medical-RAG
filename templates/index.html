@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medical RAG Clinical Query</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar h2 {
+            color: #2c3e50;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .clear-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .history-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .history-item:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+        
+        .history-item.active {
+            background: #e3f2fd;
+            border-color: #667eea;
+        }
+        
+        .history-query {
+            font-size: 13px;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .history-time {
+            font-size: 11px;
+            color: #6c757d;
+        }
+        
+        .container {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+        
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .query-display {
+            background: #e3f2fd;
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+        }
+
+        .query-label {
+            font-size: 12px;
+            color: #1976d2;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .query-text {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .sql-display {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .sql-label {
+            font-size: 12px;
+            color: #28a745;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .sql-text {
+            font-size: 14px;
+            color: #2c3e50;
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        button {
+            padding: 15px 40px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        .results {
+            margin-top: 30px;
+        }
+        
+        details {
+            margin-bottom: 25px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #2c3e50;
+            user-select: none;
+        }
+        
+        summary:hover {
+            color: #667eea;
+        }
+        
+        .data-cards {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .data-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .data-card-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .data-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        
+        .data-row:last-child {
+            border-bottom: none;
+        }
+        
+        .data-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 13px;
+        }
+        
+        .data-value {
+            color: #2c3e50;
+            font-size: 13px;
+            word-break: break-word;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin: 25px 0 15px 0;
+            font-size: 20px;
+        }
+        
+        .extracted-fields {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .field-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #1976d2;
+        }
+        
+        .summary {
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+        
+        .error {
+            color: #dc3545;
+            padding: 15px;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+        }
+
+        .no-history {
+            text-align: center;
+            color: #6c757d;
+            padding: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>
+        History
+        <button class="clear-btn" onclick="clearHistory()">Clear</button>
+    </h2>
+    <div id="historyList">
+        <div class="no-history">No queries yet</div>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Medical RAG: Clinical Query Assistant</h1>
+    <form method="POST" action="/" onsubmit="return handleSubmit(event)">
+        <input type="text" name="user_query" id="queryInput" placeholder="Enter clinical query..." required autofocus>
+        <button type="submit">Submit</button>
+    </form>
+    {% if result %}
+    <div class="results" id="currentResult">
+        <div class="query-display">
+            <div class="query-label">Your Query</div>
+            <div class="query-text">{{ result.query }}</div>
+        </div>
+        {% if result.sql_query %}
+        <div class="sql-display">
+            <div class="sql-label">Generated SQL Query</div>
+            <div class="sql-text">{{ result.sql_query }}</div>
+        </div>
+        {% endif %}
+        {% if result.error %}
+        <p class="error"><strong>Error:</strong> {{ result.error }}</p>
+        {% else %}
+        <details>
+            <summary><strong>▶ Fetched Data (click to expand)</strong></summary>
+            {% if result.fetched_data %}
+            <div class="data-cards">
+                {% for row in result.fetched_data %}
+                <div class="data-card">
+                    <div class="data-card-title">Record {{ loop.index }}</div>
+                    {% for key, val in row.items() %}
+                    <div class="data-row">
+                        <div class="data-label">{{ key }}</div>
+                        <div class="data-value">{{ val if val else '-' }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>No data found for this patient.</p>
+            {% endif %}
+        </details>
+        
+        <h3>Extracted Fields</h3>
+        <div class="extracted-fields">
+            {% if result.fields %}
+                {% for field in result.fields %}
+                <span class="field-badge">{{ field }}</span>
+                {% endfor %}
+            {% else %}
+            <p>No fields extracted.</p>
+            {% endif %}
+        </div>
+        
+        <h3>Summary</h3>
+        <div class="summary">{{ result.summary }}</div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<script>
+let history = JSON.parse(localStorage.getItem('queryHistory') || '[]');
+
+function saveToHistory(query, result) {
+    const item = {
+        id: Date.now(),
+        query: query,
+        result: result,
+        timestamp: new Date().toLocaleString()
+    };
+    history.unshift(item);
+    if (history.length > 50) history.pop();
+    localStorage.setItem('queryHistory', JSON.stringify(history));
+    renderHistory();
+}
+
+function renderHistory() {
+    const list = document.getElementById('historyList');
+    if (history.length === 0) {
+        list.innerHTML = '<div class="no-history">No queries yet</div>';
+        return;
+    }
+    list.innerHTML = history.map(item => `
+        <div class="history-item" onclick="loadHistory(${item.id})">
+            <div class="history-query">${item.query}</div>
+            <div class="history-time">${item.timestamp}</div>
+        </div>
+    `).join('');
+}
+
+function loadHistory(id) {
+    const item = history.find(h => h.id === id);
+    if (!item) return;
+    
+    document.querySelectorAll('.history-item').forEach(el => el.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    
+    const container = document.querySelector('.results') || document.createElement('div');
+    container.className = 'results';
+    container.innerHTML = item.result;
+    
+    const existing = document.getElementById('currentResult');
+    if (existing) {
+        existing.replaceWith(container);
+    } else {
+        document.querySelector('.container').appendChild(container);
+    }
+}
+
+function clearHistory() {
+    if (confirm('Clear all history?')) {
+        history = [];
+        localStorage.removeItem('queryHistory');
+        renderHistory();
+    }
+}
+
+function handleSubmit(event) {
+    const query = document.getElementById('queryInput').value;
+    
+    setTimeout(() => {
+        const resultDiv = document.querySelector('.results');
+        if (resultDiv) {
+            saveToHistory(query, resultDiv.innerHTML);
+        }
+    }, 100);
+    
+    return true;
+}
+
+renderHistory();
+</script>
+</body>
+</html>
